@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row px-2 py-2 pt-md-4 pb-md-4 mx-auto text-center">
+            <div class="col">
+                <h1 class="">Organizations list</h1>
+                <a href="/org/new" class="btn btn-info">Add new</a>
+            </div>
+        </div>
+    </div>
+    {% if organizations %}
+        <div class="table-responsive">
+            <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Users</th>
+                <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for org in organizations %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td >{{ org.name }}</td>
+                    <td >{{ org.description }}</td>
+                    <td >{{ org.users|json_encode() }}</td>
+                    <td >
+                    <div class="btn-group" role="group">
+                        <a type="button" href="/org/edit/{{ loop.index }}" class="btn btn-light btn-sm">Edit</a>
+                        <a type="button" href="/org/delete/{{ loop.index }}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No data</p>
+    {% endif %}
+{% endblock %}
