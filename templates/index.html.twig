@@ -5,7 +5,7 @@
         <div class="row px-2 py-2 pt-md-4 pb-md-4 mx-auto text-center">
             <div class="col">
                 <h1 class="">Organizations list</h1>
-                <a href="/org/new" class="btn btn-info">Add new</a>
+                <a href="/new" class="btn btn-info">Add new</a>
             </div>
         </div>
     </div>
@@ -24,17 +24,36 @@
             <tbody>
                 {% for org in organizations %}
                 <tr>
-                    <th scope="row">{{ loop.index }}</th>
+                    <th scope="row">{{ loop.index0 }}</th>
                     <td >{{ org.name }}</td>
                     <td >{{ org.description }}</td>
-                    <td >{{ org.users|json_encode() }}</td>
+                    <td >
+                    {% for user in org.users %}
+                        <div class="alert alert-secondary">{{ user.name }}; {{ user.role|join('|')}}; {{ user.password }}</div>
+                    {% endfor %}
+                    </td>
                     <td >
                     <div class="btn-group" role="group">
-                        <a type="button" href="/org/edit/{{ loop.index }}" class="btn btn-light btn-sm">Edit</a>
-                        <a type="button" href="/org/delete/{{ loop.index }}" class="btn btn-danger btn-sm">Delete</a>
+                        <a type="button" href="/edit/{{ loop.index0 }}" class="btn btn-secondary btn-sm">Edit</a>
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal{{ loop.index0 }}">Delete</button>
                     </div>
                     </td>
                 </tr>
+                <div class="modal fade" id="deleteModal{{ loop.index0 }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">You want delete this?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a type="button" href="/delete/{{ loop.index0 }}" class="btn btn-danger">Confirm delete</a>
+                    </div>
+                    </div>
+                </div>
                 {% endfor %}
             </tbody>
             </table>
