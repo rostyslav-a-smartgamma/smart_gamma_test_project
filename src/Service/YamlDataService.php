@@ -45,6 +45,7 @@ class YamlDataService
     public function updateOrgByIndex(int $index, array $data): array
     {
         $originalData = Yaml::parseFile($this->dataFileDir);
+        $data['users'] = array_values($data['users']);
         $originalData['organizations'][$index] = $data;
         $this->writeData($originalData);
 
